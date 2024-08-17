@@ -10,7 +10,11 @@ namespace Ch06
 
 		public SimultaneousMazeState(int seed)
 		{
-			_points = new List<List<int>>();
+			_points = new List<List<int>>(Constants.H);
+			for (int h = 0; h < Constants.H; h++)
+			{
+				_points.Add(new List<int>(new int[Constants.W]));
+			}
 			_turn = 0;
 			_characters = new List<Character>()
 			{
@@ -94,28 +98,50 @@ namespace Ch06
 
 			return actions;
 		}
+
+		public bool IsDone()
+		{
+			return _turn == Constants.END_TURN;
+		}
 		
 		public new string ToString()
 		{
 			var sb = new StringBuilder();
+			// ターン表示
+			sb.Append($"turn:\t{_turn}\n");
+			// 得点表示
+			for (int playerId = 0; playerId < 2; playerId++)
+			{
+				sb.Append($"score({playerId}):\t{_characters[playerId]._gameScore}\n");
+			}
+			// 盤面の表示
 			for (int y = 0; y < Constants.H; y++)
 			{
 				for (int x = 0; x < Constants.W; x++)
 				{
-					bool found = false;
-					foreach (var character in _characters)
+					bool isPlayer = false;
+
+					for (int playerId = 0; playerId < 2; playerId++)
 					{
-						if (character._y == y && character._x == x)
+						if (_characters[playerId]._y == y && _characters[playerId]._x == x)
 						{
-							sb.Append("C");
-							found = true;
+							isPlayer = true;
+							var str = playerId == 0 ? "A" : "B";
+							sb.Append(str); // note:盤面にBしかいない場合は重なっている
 							break;
 						}
 					}
 
-					if (!found)
+					if (!isPlayer)
 					{
-						sb.Append(_points[y][x]);
+						if (_points[y][x] == 0)
+						{
+							sb.Append(" .");
+						}
+						else
+						{
+							sb.Append(_points[y][x]);
+						}
 					}
 				}
 				sb.Append("\n");

@@ -6,7 +6,7 @@ namespace Ch06
 		public int _y;
 		public int _gameScore;
 	
-		public Character(int x = 0, int y = 0)
+		public Character(int y = 0, int x = 0)
 		{
 			_x = x;
 			_y = y;
