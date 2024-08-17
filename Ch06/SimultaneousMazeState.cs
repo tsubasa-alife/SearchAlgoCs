@@ -37,7 +37,7 @@ namespace Ch06
 						continue;
 					}
 
-					if (_characters[1]._y == y && _characters[0]._x == x)
+					if (_characters[1]._y == y && _characters[1]._x == x)
 					{
 						continue;
 					}
@@ -136,7 +136,7 @@ namespace Ch06
 					{
 						if (_points[y][x] == 0)
 						{
-							sb.Append(" .");
+							sb.Append(".");
 						}
 						else
 						{
