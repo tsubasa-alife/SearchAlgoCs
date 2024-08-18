@@ -103,6 +103,65 @@ namespace Ch06
 		{
 			return _turn == Constants.END_TURN;
 		}
+
+		public WinningStatus GetWinningStatus()
+		{
+			if (IsDone())
+			{
+				if (_characters[0]._gameScore > _characters[1]._gameScore)
+				{
+					return WinningStatus.FIRST;
+				}
+				else if (_characters[0]._gameScore < _characters[1]._gameScore)
+				{
+					return WinningStatus.SECOND;
+				}
+				else
+				{
+					return WinningStatus.DRAW;
+				}
+			}
+			else
+			{
+				return WinningStatus.NONE;
+			}
+		}
+
+		public double GetFirstPlayerScoreForWinRate()
+		{
+			switch (GetWinningStatus())
+			{
+				case WinningStatus.FIRST:
+					return 1.0;
+				case WinningStatus.SECOND:
+					return 0.0;
+				default:
+					return 0.5;
+			}
+		}
+		
+		public SimultaneousMazeState DeepCopy()
+		{
+			var newState = new SimultaneousMazeState(Constants.SEED);
+			newState._turn = _turn;
+			newState._characters[0]._x = _characters[0]._x;
+			newState._characters[0]._y = _characters[0]._y;
+			newState._characters[0]._gameScore = _characters[0]._gameScore;
+			newState._characters[1]._x = _characters[1]._x;
+			newState._characters[1]._y = _characters[1]._y;
+			newState._characters[1]._gameScore = _characters[1]._gameScore;
+
+			for (int y = 0; y < Constants.H; y++)
+			{
+				for (int x = 0; x < Constants.W; x++)
+				{
+					newState._points[y][x] = _points[y][x];
+				}
+			}
+
+			return newState;
+		}
+		
 		
 		public new string ToString()
 		{
